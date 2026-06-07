@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ShieldAlert } from "lucide-react";
+import { ShieldAlert, LogOut } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth/session";
+import { signOutAction } from "@/lib/actions/auth";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
@@ -37,7 +38,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <div className="flex-1 lg:pl-64">
         <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-card px-4 lg:px-8">
           <div className="lg:hidden"><Logo href="/admin" /></div>
-          <span className="ml-auto text-sm text-muted-foreground">Signed in as {user.email}</span>
+          <div className="ml-auto flex items-center gap-3">
+            <span className="hidden text-sm text-muted-foreground sm:inline">Signed in as {user.email}</span>
+            <form action={signOutAction}>
+              <Button type="submit" variant="outline" size="sm">
+                <LogOut className="h-4 w-4" /> Sign out
+              </Button>
+            </form>
+          </div>
         </header>
         <div className="p-4 lg:p-8">{children}</div>
       </div>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, Building2, MessageSquare, CalendarCheck, Users, Tags, Megaphone, ExternalLink,
+  LayoutDashboard, Building2, MessageSquare, CalendarCheck, Users, Tags, Megaphone,
 } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 import { cn } from "@/lib/utils";
@@ -43,11 +43,6 @@ export function AdminSidebar() {
           );
         })}
       </nav>
-      <div className="border-t border-primary-foreground/10 p-3">
-        <Link href="/search" target="_blank" className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-primary-foreground/70 hover:bg-primary-foreground/10">
-          <ExternalLink className="h-4 w-4" /> View public site
-        </Link>
-      </div>
     </aside>
   );
 }
