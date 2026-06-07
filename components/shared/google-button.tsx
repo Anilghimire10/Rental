@@ -12,7 +12,9 @@ export function GoogleButton({ next = "/" }: { next?: string }) {
   async function signIn() {
     setLoading(true);
     const supabase = createClient();
-    const site = process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin;
+    // Always return to the origin the user is currently on (works on localhost,
+    // Vercel previews, and production alike) — never a build-time-baked URL.
+    const site = window.location.origin;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${site}/auth/callback?next=${encodeURIComponent(next)}` },
