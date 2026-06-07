@@ -10,7 +10,8 @@ const securityHeaders = [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api.mapbox.com",
       "style-src 'self' 'unsafe-inline' https://api.mapbox.com https://fonts.googleapis.com",
-      "img-src 'self' data: blob: https://*.supabase.co https://api.mapbox.com https://*.tiles.mapbox.com https://images.unsplash.com",
+      // Allow images from any https host (ad banners can be hosted anywhere) + data/blob.
+      "img-src 'self' data: blob: https:",
       "font-src 'self' https://fonts.gstatic.com",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.mapbox.com https://events.mapbox.com",
       "worker-src 'self' blob:",

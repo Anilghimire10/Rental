@@ -34,7 +34,17 @@ export const advertisementSchema = z.object({
   id: z.string().uuid().optional(),
   title: z.string().trim().min(2).max(120),
   image: z.string().url("Image URL required"),
-  linkUrl: z.string().url("Enter a valid URL").optional().or(z.literal("")),
+  // Accept an internal path ("/search?...") OR a full external URL, or leave blank.
+  linkUrl: z
+    .string()
+    .trim()
+    .max(500)
+    .refine(
+      (v) => v === "" || v.startsWith("/") || /^https?:\/\//i.test(v),
+      "Use a path like /search or a full https:// URL",
+    )
+    .optional()
+    .or(z.literal("")),
   position: z.enum(["home_hero", "sidebar", "search_top"]).default("home_hero"),
   isActive: z.coerce.boolean().default(true),
 });

@@ -44,7 +44,7 @@ export function AdminSidebar() {
         })}
       </nav>
       <div className="border-t border-primary-foreground/10 p-3">
-        <Link href="/" className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-primary-foreground/70 hover:bg-primary-foreground/10">
+        <Link href="/search" target="_blank" className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-primary-foreground/70 hover:bg-primary-foreground/10">
           <ExternalLink className="h-4 w-4" /> View public site
         </Link>
       </div>

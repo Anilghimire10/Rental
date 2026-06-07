@@ -3,6 +3,7 @@ import { List, Map as MapIcon } from "lucide-react";
 import { ListingCard } from "@/components/shared/listing-card";
 import { SearchFilters } from "@/components/shared/search-filters";
 import { ListingsMap } from "@/components/shared/listings-map";
+import { AdBanner } from "@/components/shared/ad-banner";
 import { Pagination } from "@/components/shared/pagination";
 import { EmptyState } from "@/components/shared/empty-state";
 import { searchPublicListings, getMapPoints } from "@/lib/services/listingService";
@@ -63,6 +64,8 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
           </Link>
         </div>
       </div>
+
+      <AdBanner position="search_top" className="mb-6" />
 
       <div className="grid gap-8 lg:grid-cols-[300px_1fr]">
         <aside className="lg:sticky lg:top-20 lg:self-start">

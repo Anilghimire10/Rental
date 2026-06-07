@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Search, ShieldCheck, MessageCircle, KeyRound, Star, ArrowRight, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ListingCard } from "@/components/shared/listing-card";
 import { SearchBar } from "@/components/shared/search-bar";
+import { AdBanner } from "@/components/shared/ad-banner";
 import { EmptyState } from "@/components/shared/empty-state";
 import { getFeaturedListings, getLatestListings } from "@/lib/services/listingService";
 import { getActiveCategories } from "@/lib/services/categoryService";
@@ -13,6 +15,10 @@ import { POPULAR_AREAS, BRAND, AGENCY } from "@/lib/config";
 import { whatsappLink } from "@/lib/utils";
 
 export default async function HomePage() {
+  // Admins go straight to their dashboard — they don't need the public landing page.
+  const current = await getCurrentUser();
+  if (current?.role === "admin") redirect("/admin");
+
   const [featured, latest, categories, favIds, user] = await Promise.all([
     getFeaturedListings(6),
     getLatestListings(8),
@@ -58,6 +64,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Advertisement banner (admin-managed, position: home_hero) */}
+      <AdBanner position="home_hero" className="container mt-10" />
 
       {/* Featured */}
       <section className="container py-14">
