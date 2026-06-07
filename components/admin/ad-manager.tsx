@@ -14,6 +14,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+import { ImageUploader } from "@/components/shared/image-uploader";
 import { upsertAdAction, deleteAdAction } from "@/lib/actions/admin";
 import type { Advertisement } from "@/lib/types";
 
@@ -46,8 +47,23 @@ export function AdManager({ ads }: { ads: Advertisement[] }) {
         <CardHeader><CardTitle>New advertisement</CardTitle></CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-2">
           <div className="space-y-1.5"><Label>Title</Label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
-          <div className="space-y-1.5"><Label>Image URL</Label><Input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="https://…" /></div>
           <div className="space-y-1.5"><Label>Link URL</Label><Input value={form.linkUrl} onChange={(e) => setForm({ ...form, linkUrl: e.target.value })} placeholder="/owner/listings/new" /></div>
+
+          <div className="space-y-1.5 sm:col-span-2">
+            <Label>Banner image</Label>
+            <ImageUploader
+              single
+              max={1}
+              value={form.image ? [form.image] : []}
+              onChange={(urls) => setForm({ ...form, image: urls[0] ?? "" })}
+            />
+            <Input
+              value={form.image}
+              onChange={(e) => setForm({ ...form, image: e.target.value })}
+              placeholder="…or paste an image URL (https://…)"
+              className="mt-2"
+            />
+          </div>
           <div className="space-y-1.5">
             <Label>Position</Label>
             <Select value={form.position} onValueChange={(v) => setForm({ ...form, position: v })}>

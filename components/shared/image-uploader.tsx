@@ -15,10 +15,12 @@ export function ImageUploader({
   value,
   onChange,
   max = 20,
+  single = false,
 }: {
   value: string[];
   onChange: (urls: string[]) => void;
   max?: number;
+  single?: boolean;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -65,8 +67,8 @@ export function ImageUploader({
         className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border bg-secondary/40 p-8 text-center transition hover:border-accent"
       >
         <UploadCloud className="h-8 w-8 text-muted-foreground" />
-        <p className="text-sm font-medium">{uploading ? "Uploading…" : "Click to upload photos"}</p>
-        <p className="text-xs text-muted-foreground">JPG, PNG or WebP · up to 5 MB each · max {max}</p>
+        <p className="text-sm font-medium">{uploading ? "Uploading…" : single ? "Click to upload an image" : "Click to upload photos"}</p>
+        <p className="text-xs text-muted-foreground">JPG, PNG or WebP · up to 5 MB{single ? "" : " each · max " + max}</p>
         <input
           ref={inputRef}
           type="file"
@@ -82,7 +84,7 @@ export function ImageUploader({
           {value.map((url, i) => (
             <div key={url} className={cn("group relative aspect-square overflow-hidden rounded-md border", i === 0 ? "border-accent" : "border-border")}>
               <Image src={url} alt={`Photo ${i + 1}`} fill sizes="120px" className="object-cover" />
-              {i === 0 && (
+              {i === 0 && !single && (
                 <span className="absolute left-1 top-1 rounded bg-accent px-1.5 py-0.5 text-[10px] font-semibold text-accent-foreground">Cover</span>
               )}
               <div className="absolute inset-0 flex items-center justify-center gap-1 bg-black/40 opacity-0 transition group-hover:opacity-100">
