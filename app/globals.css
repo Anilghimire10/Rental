@@ -1,0 +1,67 @@
+/* Mapbox GL base styles — must precede other statements per CSS @import rules. */
+@import "mapbox-gl/dist/mapbox-gl.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   GharBhada theme — "Simple but Premium" Deep Green & Cream.
+   HSL values map the spec hex palette into shadcn/ui CSS variables.
+   #1A3C34 forest · #C8A96A gold · #FAF8F3 cream · #FFFFFF surface
+   #1C1C1C text · #6B7280 muted · #E5E1D8 border
+============================================================================ */
+@layer base {
+  :root {
+    --background: 40 33% 96%;        /* #FAF8F3 */
+    --foreground: 0 0% 11%;          /* #1C1C1C */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 11%;
+
+    --primary: 167 30% 17%;          /* #1A3C34 deep forest */
+    --primary-foreground: 40 33% 96%;
+
+    --accent: 37 45% 60%;            /* #C8A96A warm gold */
+    --accent-foreground: 167 30% 17%;
+
+    --secondary: 40 25% 92%;
+    --secondary-foreground: 167 30% 17%;
+
+    --muted: 40 25% 92%;
+    --muted-foreground: 220 9% 46%;  /* #6B7280 */
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 20% 87%;            /* #E5E1D8 */
+    --input: 40 20% 87%;
+    --ring: 37 45% 60%;
+
+    --radius: 0.625rem;              /* ~10px rounded corners */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-playfair), Georgia, serif;
+  }
+}
+
+@layer utilities {
+  .container-tight {
+    @apply container max-w-6xl;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
