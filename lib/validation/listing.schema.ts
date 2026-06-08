@@ -22,10 +22,13 @@ export const listingInputSchema = z.object({
   monthlyRent: z.coerce.number().int().min(0).max(100_000_000),
   securityDeposit: z.coerce.number().int().min(0).max(100_000_000).default(0),
   advanceRequired: z.coerce.boolean().default(false),
+  isNegotiable: z.coerce.boolean().default(false),
+  electricityIncluded: z.coerce.boolean().default(false),
+  waterIncluded: z.coerce.boolean().default(false),
   availableFrom: optionalDate,
 
-  // Location (city fixed to Pokhara in v1 but accepted as a field)
-  area: z.string().trim().min(2, "Add an area").max(120),
+  // Location (city fixed to Pokhara in v1 but accepted as a field). Area optional.
+  area: z.string().trim().max(120).optional().or(z.literal("")),
   wardNumber: z.coerce.number().int().min(0).max(99).optional(),
   city: z.string().trim().min(2).max(60).default("Pokhara"),
   nearbyLandmark: z.string().trim().max(160).optional().or(z.literal("")),

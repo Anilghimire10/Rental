@@ -48,3 +48,22 @@ export const advertisementSchema = z.object({
   position: z.enum(["home_hero", "sidebar", "search_top"]).default("home_hero"),
   isActive: z.coerce.boolean().default(true),
 });
+
+// --- FAQ management (admin) -------------------------------------------------
+export const faqSchema = z.object({
+  id: z.string().uuid().optional(),
+  question: z.string().trim().min(5, "Question is too short").max(200),
+  answer: z.string().trim().min(5, "Answer is too short").max(2000),
+  isActive: z.coerce.boolean().default(true),
+  sortOrder: z.coerce.number().int().min(0).max(999).default(0),
+});
+
+// --- Feedback (public submission) ------------------------------------------
+export const feedbackSchema = z.object({
+  name: z.string().trim().min(2, "Enter your name").max(80),
+  email: z.string().trim().toLowerCase().email("Enter a valid email").optional().or(z.literal("")),
+  rating: z.coerce.number().int().min(1).max(5).optional(),
+  message: z.string().trim().min(5, "Please write a little more").max(2000),
+  // Honeypot.
+  company: z.string().max(0, "Bot detected").optional().or(z.literal("")),
+});

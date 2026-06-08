@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BedDouble, Bath, Maximize, MapPin } from "lucide-react";
+import { BedDouble, Bath, Maximize, MapPin, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { FavoriteButton } from "@/components/shared/favorite-button";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, timeAgo } from "@/lib/utils";
 import type { PublicListingCard } from "@/lib/types";
 
 export function ListingCard({
@@ -32,9 +32,16 @@ export function ListingCard({
           ) : (
             <div className="flex h-full items-center justify-center text-muted-foreground">No photo</div>
           )}
-          {listing.isFeatured && (
-            <Badge variant="accent" className="absolute left-3 top-3">Featured</Badge>
-          )}
+          <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
+            <Badge variant={listing.isRented ? "destructive" : "success"}>
+              {listing.isRented ? "Unavailable" : "Available"}
+            </Badge>
+            {listing.isFeatured && (
+              <span className="flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground shadow-card">
+                <Star className="h-3.5 w-3.5 fill-current" /> Featured
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="space-y-2 p-4">
@@ -59,9 +66,15 @@ export function ListingCard({
             ) : null}
           </div>
 
-          <div className="flex items-baseline gap-1 pt-2">
-            <span className="text-lg font-bold text-primary">{formatPrice(listing.monthlyRent)}</span>
-            <span className="text-xs text-muted-foreground">/ month</span>
+          <div className="flex items-end justify-between pt-2">
+            <div className="flex items-baseline gap-1">
+              <span className="text-lg font-bold text-primary">{formatPrice(listing.monthlyRent)}</span>
+              <span className="text-xs text-muted-foreground">/ month</span>
+              {listing.isNegotiable && (
+                <Badge variant="accent" className="ml-1">Negotiable</Badge>
+              )}
+            </div>
+            <span className="text-xs text-muted-foreground">{timeAgo(listing.createdAt)}</span>
           </div>
         </div>
       </Link>

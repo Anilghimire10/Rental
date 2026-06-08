@@ -50,6 +50,8 @@ export interface PublicListingCard {
   coverImage: string | null;
   amenities: string[];
   isFeatured: boolean;
+  isRented: boolean;
+  isNegotiable: boolean;
   availableFrom: string | null;
   createdAt: string;
 }
@@ -62,6 +64,8 @@ export interface PublicListingDetail extends PublicListingCard {
   description: string;
   securityDeposit: number;
   advanceRequired: boolean;
+  electricityIncluded: boolean;
+  waterIncluded: boolean;
   wardNumber: number | null;
   nearbyLandmark: string | null;
   approxLat: number; // jittered — approximate circle center, not the exact pin
@@ -191,6 +195,21 @@ export interface Advertisement {
   linkUrl: string | null;
   position: string;
   isActive: boolean;
+  createdAt: string;
+}
+
+export interface Faq {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+export interface AdminFeedback {
+  id: string;
+  name: string;
+  email: string | null;
+  rating: number | null;
+  message: string;
   createdAt: string;
 }
 

@@ -16,19 +16,6 @@ export const metadata = { title: "My properties" };
 export default async function OwnerListingsPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/auth/login?next=/owner/listings");
-  if (user.role !== "owner" && user.role !== "admin") {
-    return (
-      <div className="container py-16">
-        <EmptyState
-          icon={<Building2 className="h-10 w-10" />}
-          title="Become an owner to list properties"
-          description="Your account is set up as a tenant. Contact us to switch to an owner account."
-        >
-          <Button asChild><Link href="/account">Go to account</Link></Button>
-        </EmptyState>
-      </div>
-    );
-  }
 
   const listings = await getOwnerListings();
 
@@ -61,7 +48,9 @@ export default async function OwnerListingsPage() {
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-xs font-medium text-muted-foreground">{l.propertyCode}</span>
                     <ListingStatusBadge status={l.status} />
-                    {l.isRented && <span className="text-xs text-destructive">Rented</span>}
+                    <span className={l.isRented ? "text-xs font-medium text-destructive" : "text-xs font-medium text-emerald-600"}>
+                      {l.isRented ? "Unavailable" : "Available"}
+                    </span>
                   </div>
                   <Link href={`/property/${l.slug}`} className="mt-1 block font-serif text-lg font-semibold hover:text-primary">{l.title}</Link>
                   <p className="text-sm text-muted-foreground">{l.area} · {formatPrice(l.monthlyRent)}/mo</p>

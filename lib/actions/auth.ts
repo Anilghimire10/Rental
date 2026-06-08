@@ -31,7 +31,7 @@ export async function signUpAction(_prev: ActionResult | null, formData: FormDat
       data: {
         name: parsed.data.name,
         phone: parsed.data.phone || null,
-        role: parsed.data.role, // 'tenant' | 'owner' — trigger clamps admin
+        role: "tenant", // single account type; everyone can rent and list
       },
     },
   });

@@ -44,6 +44,8 @@ export const CITY_CENTER = { lat: 28.2096, lng: 83.9856, zoom: 12 };
 export const DEFAULT_CATEGORIES = [
   "Room",
   "Single Room",
+  "1 BK",
+  "2 BK",
   "1 BHK",
   "2 BHK",
   "3 BHK",

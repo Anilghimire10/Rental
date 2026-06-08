@@ -36,6 +36,8 @@ export function toPublicCard(row: ListingRow, cats?: CatLookup): PublicListingCa
     coverImage: row.cover_image ?? row.gallery_images?.[0] ?? null,
     amenities: row.amenities ?? [],
     isFeatured: row.is_featured,
+    isRented: row.is_rented,
+    isNegotiable: row.is_negotiable,
     availableFrom: row.available_from,
     createdAt: row.created_at,
   };
@@ -47,6 +49,8 @@ export function toPublicDetail(row: ListingRow, cats?: CatLookup): PublicListing
     description: row.description,
     securityDeposit: row.security_deposit,
     advanceRequired: row.advance_required,
+    electricityIncluded: row.electricity_included,
+    waterIncluded: row.water_included,
     wardNumber: row.ward_number,
     nearbyLandmark: row.nearby_landmark,
     // APPROXIMATE only — jitter the exact coordinates so the public never gets the pin.

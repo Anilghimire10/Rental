@@ -19,10 +19,12 @@ export function SiteFooter() {
         <div>
           <h4 className="mb-3 text-sm font-semibold">Explore</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
+            <li><Link href="/" className="hover:text-primary">Browse homes</Link></li>
             <li><Link href="/search" className="hover:text-primary">All properties</Link></li>
-            <li><Link href="/search?sort=popular" className="hover:text-primary">Popular</Link></li>
-            <li><Link href="/search?view=map" className="hover:text-primary">Map view</Link></li>
             <li><Link href="/owner/listings/new" className="hover:text-primary">List your property</Link></li>
+            <li><Link href="/about" className="hover:text-primary">About us</Link></li>
+            <li><Link href="/faq" className="hover:text-primary">FAQ</Link></li>
+            <li><Link href="/policy" className="hover:text-primary">Terms &amp; Privacy</Link></li>
           </ul>
         </div>
 

@@ -8,7 +8,6 @@ export const metadata = { title: "Add a property" };
 export default async function NewListingPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/auth/login?next=/owner/listings/new");
-  if (user.role !== "owner" && user.role !== "admin") redirect("/owner/listings");
 
   const categories = await getActiveCategories();
 

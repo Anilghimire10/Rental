@@ -1,7 +1,7 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdmin, requireOwner, requireVerified, AuthError } from "@/lib/auth/session";
+import { requireAdmin, requireUser, requireVerified, AuthError } from "@/lib/auth/session";
 import {
   categoryLookup,
   toAdminListing,
@@ -50,8 +50,11 @@ function dbToWrite(input: ListingInput, ownerId: string) {
     monthly_rent: input.monthlyRent,
     security_deposit: input.securityDeposit,
     advance_required: input.advanceRequired,
+    is_negotiable: input.isNegotiable,
+    electricity_included: input.electricityIncluded,
+    water_included: input.waterIncluded,
     available_from: input.availableFrom || null,
-    area: input.area,
+    area: (input.area && input.area.trim()) || input.city || "Pokhara",
     ward_number: input.wardNumber ?? null,
     city: input.city || "Pokhara",
     nearby_landmark: input.nearbyLandmark || null,
@@ -258,10 +261,8 @@ export async function recordView(listingId: string): Promise<void> {
 // ---------------------------------------------------------------------------
 
 export async function createListing(input: ListingInput): Promise<string> {
+  // Any verified, non-banned user may list a property — no separate "owner" role.
   const user = await requireVerified();
-  if (user.role !== "owner" && user.role !== "admin") {
-    throw new AuthError("Only owners can create listings.", 403);
-  }
   const supabase = createClient();
   const { data, error } = await supabase
     .from("listings")
@@ -273,7 +274,7 @@ export async function createListing(input: ListingInput): Promise<string> {
 }
 
 export async function getOwnerListings(): Promise<OwnerListing[]> {
-  const user = await requireOwner();
+  const user = await requireUser();
   const supabase = createClient();
   const cats = await getCategoryLookup();
   const { data, error } = await supabase
@@ -289,7 +290,7 @@ export async function getOwnerListings(): Promise<OwnerListing[]> {
 }
 
 export async function getOwnerListing(id: string): Promise<OwnerListing | null> {
-  const user = await requireOwner();
+  const user = await requireUser();
   const supabase = createClient();
   const cats = await getCategoryLookup();
   let q = supabase.from("listings").select("*").eq("id", id);
@@ -302,7 +303,7 @@ export async function getOwnerListing(id: string): Promise<OwnerListing | null> 
 }
 
 export async function updateListing(id: string, input: ListingInput): Promise<void> {
-  const user = await requireOwner();
+  const user = await requireUser();
   const supabase = createClient();
   const { data: existing } = await supabase
     .from("listings")
@@ -322,7 +323,7 @@ export async function updateListing(id: string, input: ListingInput): Promise<vo
 }
 
 export async function setListingRented(id: string, isRented: boolean): Promise<void> {
-  const user = await requireOwner();
+  const user = await requireUser();
   const supabase = createClient();
   let q = supabase.from("listings").update({ is_rented: isRented }).eq("id", id);
   if (user.role !== "admin") q = q.eq("owner_id", user.id);
@@ -331,7 +332,7 @@ export async function setListingRented(id: string, isRented: boolean): Promise<v
 }
 
 export async function deleteListing(id: string): Promise<void> {
-  const user = await requireOwner();
+  const user = await requireUser();
   const supabase = createClient();
   let q = supabase.from("listings").delete().eq("id", id);
   if (user.role !== "admin") q = q.eq("owner_id", user.id);

@@ -22,7 +22,10 @@ export const signUpSchema = z.object({
     .regex(/^[+0-9()\s-]+$/, "Enter a valid phone number")
     .optional()
     .or(z.literal("")),
-  role: z.enum(["tenant", "owner"]).default("tenant"),
+  // Single account type — everyone can both rent and list. (Role kept internally
+  // as "tenant"; admins are promoted separately.)
+  // Must accept Terms & Conditions (checkbox sends "yes" only when checked).
+  terms: z.literal("yes", { errorMap: () => ({ message: "Please accept the Terms & Conditions" }) }),
   // Honeypot — must stay empty. Bots fill hidden fields.
   website: z.string().max(0, "Bot detected").optional().or(z.literal("")),
 });

@@ -49,6 +49,9 @@ export function ListingForm({
       monthlyRent: existing?.monthlyRent ?? 0,
       securityDeposit: existing?.securityDeposit ?? 0,
       advanceRequired: existing?.advanceRequired ?? false,
+      isNegotiable: existing?.isNegotiable ?? false,
+      electricityIncluded: existing?.electricityIncluded ?? false,
+      waterIncluded: existing?.waterIncluded ?? false,
       availableFrom: existing?.availableFrom ?? "",
       area: existing?.area ?? "",
       wardNumber: existing?.wardNumber ?? undefined,
@@ -153,11 +156,11 @@ export function ListingForm({
           <Field label="Security deposit (Rs.)" error={err("securityDeposit")}>
             <Input type="number" min={0} {...register("securityDeposit")} />
           </Field>
-          <div className="flex items-center gap-3 pt-7">
-            <Controller control={control} name="advanceRequired" render={({ field }) => (
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
-            )} />
-            <Label>Advance payment required</Label>
+          <div className="flex flex-col justify-center gap-3 sm:col-span-3 sm:flex-row sm:flex-wrap sm:gap-6">
+            <ToggleField control={control} name="advanceRequired" label="Advance payment required" />
+            <ToggleField control={control} name="isNegotiable" label="Rent negotiable" />
+            <ToggleField control={control} name="electricityIncluded" label="Electricity included in rent" />
+            <ToggleField control={control} name="waterIncluded" label="Water included in rent" />
           </div>
         </CardContent>
       </Card>
@@ -193,7 +196,7 @@ export function ListingForm({
         <CardHeader><CardTitle>Location</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-3">
-            <Field label="Area" error={err("area")}><Input {...register("area")} placeholder="e.g. Lakeside" /></Field>
+            <Field label="Area (optional)" error={err("area")}><Input {...register("area")} placeholder="e.g. Lakeside" /></Field>
             <Field label="Ward number"><Input type="number" min={0} {...register("wardNumber")} /></Field>
             <Field label="City"><Input {...register("city")} defaultValue={DEFAULT_CITY.name} /></Field>
             <Field label="Nearby landmark" className="sm:col-span-3"><Input {...register("nearbyLandmark")} placeholder="e.g. near Lakeside chowk" /></Field>
@@ -271,5 +274,25 @@ function Field({
       {children}
       {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
+  );
+}
+
+function ToggleField({
+  control, name, label,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: any; name: keyof FormValues; label: string;
+}) {
+  return (
+    <label className="flex items-center gap-2 text-sm">
+      <Controller
+        control={control}
+        name={name as never}
+        render={({ field }) => (
+          <Switch checked={!!field.value} onCheckedChange={field.onChange} />
+        )}
+      />
+      {label}
+    </label>
   );
 }

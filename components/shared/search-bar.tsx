@@ -33,7 +33,7 @@ export function SearchBar({ categories }: { categories: Category[] }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="grid w-full gap-3 rounded-xl border border-border bg-card p-3 shadow-soft sm:grid-cols-[1.4fr_1fr_1fr_auto]"
+      className="grid w-full gap-3 sm:grid-cols-[1.6fr_1fr_1fr_auto]"
     >
       <Input name="area" placeholder="Area (e.g. Lakeside)" aria-label="Area" />
 
@@ -49,7 +49,7 @@ export function SearchBar({ categories }: { categories: Category[] }) {
 
       <Input name="maxRent" type="number" min={0} placeholder="Max rent (Rs.)" aria-label="Max rent" />
 
-      <Button type="submit" variant="accent" size="lg">
+      <Button type="submit" variant="accent" className="h-10 px-8">
         <Search className="h-4 w-4" /> Search
       </Button>
     </form>

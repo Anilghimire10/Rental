@@ -38,9 +38,11 @@ export function OwnerListingActions({
 
   return (
     <div className="flex items-center gap-2">
-      <label className="flex items-center gap-2 text-xs text-muted-foreground">
-        <Switch checked={isRented} onCheckedChange={toggleRented} disabled={pending} />
-        Rented
+      <label className="flex items-center gap-2 text-xs font-medium">
+        <Switch checked={!isRented} onCheckedChange={(available) => toggleRented(!available)} disabled={pending} />
+        <span className={isRented ? "text-destructive" : "text-emerald-600"}>
+          {isRented ? "Unavailable" : "Available"}
+        </span>
       </label>
       <Button asChild variant="outline" size="sm">
         <Link href={`/owner/listings/${id}/edit`}><Pencil className="h-3.5 w-3.5" /> Edit</Link>

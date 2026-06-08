@@ -35,11 +35,9 @@ export function UserMenu({ user }: { user: SessionUser }) {
             <Link href="/admin"><Shield className="h-4 w-4" /> Admin dashboard</Link>
           </DropdownMenuItem>
         )}
-        {(user.role === "owner" || user.role === "admin") && (
-          <DropdownMenuItem asChild>
-            <Link href="/owner/listings"><LayoutDashboard className="h-4 w-4" /> My properties</Link>
-          </DropdownMenuItem>
-        )}
+        <DropdownMenuItem asChild>
+          <Link href="/owner/listings"><LayoutDashboard className="h-4 w-4" /> My properties</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/favorites"><Heart className="h-4 w-4" /> Saved</Link>
         </DropdownMenuItem>

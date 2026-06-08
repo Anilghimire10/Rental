@@ -59,6 +59,9 @@ create table if not exists public.listings (
   monthly_rent      integer not null check (monthly_rent >= 0),
   security_deposit  integer not null default 0 check (security_deposit >= 0),
   advance_required  boolean not null default false,
+  is_negotiable        boolean not null default false,
+  electricity_included boolean not null default false,
+  water_included       boolean not null default false,
   available_from    date,
 
   -- Location (city architected for multi-city; v1 = Pokhara)
@@ -199,6 +202,30 @@ create table if not exists public.advertisements (
   created_at timestamptz not null default now()
 );
 create index if not exists ads_position_idx on public.advertisements (position) where is_active;
+
+-- ============================================================================
+-- faqs (admin-managed, shown on the landing page)
+-- ============================================================================
+create table if not exists public.faqs (
+  id         uuid primary key default gen_random_uuid(),
+  question   text not null,
+  answer     text not null,
+  is_active  boolean not null default true,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+-- ============================================================================
+-- feedback (public submissions; admin-only read)
+-- ============================================================================
+create table if not exists public.feedback (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null,
+  email      text,
+  rating     integer check (rating is null or (rating between 1 and 5)),
+  message    text not null,
+  created_at timestamptz not null default now()
+);
 
 -- ============================================================================
 -- Helper functions (SECURITY DEFINER to read role without recursive RLS).

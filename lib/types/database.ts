@@ -45,6 +45,9 @@ export type ListingRow = {
   monthly_rent: number;
   security_deposit: number;
   advance_required: boolean;
+  is_negotiable: boolean;
+  electricity_included: boolean;
+  water_included: boolean;
   available_from: string | null;
   area: string;
   ward_number: number | null;
@@ -121,6 +124,24 @@ export type AdvertisementRow = {
   created_at: string;
 }
 
+export type FaqRow = {
+  id: string;
+  question: string;
+  answer: string;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+}
+
+export type FeedbackRow = {
+  id: string;
+  name: string;
+  email: string | null;
+  rating: number | null;
+  message: string;
+  created_at: string;
+}
+
 // Each table must include `Relationships` (and the schema `CompositeTypes`) for
 // @supabase/supabase-js v2 to recognize the type — otherwise insert/update args
 // collapse to `never`.
@@ -144,6 +165,8 @@ export interface Database {
       visit_requests: { Row: VisitRequestRow; Insert: Partial<VisitRequestRow> & { listing_id: string; name: string; phone: string }; Update: Partial<VisitRequestRow>; Relationships: Rel };
       favorites: { Row: FavoriteRow; Insert: { user_id: string; listing_id: string }; Update: Partial<FavoriteRow>; Relationships: Rel };
       advertisements: { Row: AdvertisementRow; Insert: Partial<AdvertisementRow> & { title: string; image: string }; Update: Partial<AdvertisementRow>; Relationships: Rel };
+      faqs: { Row: FaqRow; Insert: Partial<FaqRow> & { question: string; answer: string }; Update: Partial<FaqRow>; Relationships: Rel };
+      feedback: { Row: FeedbackRow; Insert: Partial<FeedbackRow> & { name: string; message: string }; Update: Partial<FeedbackRow>; Relationships: Rel };
     };
     Views: Record<string, never>;
     Functions: {

@@ -12,6 +12,8 @@ alter table public.inquiries      enable row level security;
 alter table public.visit_requests enable row level security;
 alter table public.favorites      enable row level security;
 alter table public.advertisements enable row level security;
+alter table public.faqs           enable row level security;
+alter table public.feedback       enable row level security;
 
 -- profiles -------------------------------------------------------------------
 drop policy if exists "profiles_select_own" on public.profiles;
@@ -57,9 +59,9 @@ create policy "listings_admin_read" on public.listings
 drop policy if exists "listings_owner_insert" on public.listings;
 create policy "listings_owner_insert" on public.listings
   for insert with check (
+    -- Any verified, non-banned user may list a property (single account type).
     auth.uid() = owner_id
     and public.is_not_banned()
-    and public.current_role() in ('owner', 'admin')
     and status = 'pending'
     and is_featured = false
   );
@@ -139,6 +141,24 @@ create policy "ads_public_read" on public.advertisements
 
 drop policy if exists "ads_admin_all" on public.advertisements;
 create policy "ads_admin_all" on public.advertisements
+  for all using (public.is_admin()) with check (public.is_admin());
+
+-- faqs ----------------------------------------------------------------------
+drop policy if exists "faqs_public_read" on public.faqs;
+create policy "faqs_public_read" on public.faqs
+  for select using (is_active or public.is_admin());
+
+drop policy if exists "faqs_admin_all" on public.faqs;
+create policy "faqs_admin_all" on public.faqs
+  for all using (public.is_admin()) with check (public.is_admin());
+
+-- feedback ------------------------------------------------------------------
+drop policy if exists "feedback_insert_anyone" on public.feedback;
+create policy "feedback_insert_anyone" on public.feedback
+  for insert with check (true);
+
+drop policy if exists "feedback_admin_read" on public.feedback;
+create policy "feedback_admin_read" on public.feedback
   for all using (public.is_admin()) with check (public.is_admin());
 
 -- Allow anon/auth to call the view-count RPC (SECURITY DEFINER, scoped to approved).

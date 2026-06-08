@@ -199,6 +199,18 @@ async function main() {
     { onConflict: "title" },
   );
 
+  console.log("Seeding FAQs...");
+  const { data: existingFaqs } = await db.from("faqs").select("id").limit(1);
+  if (!existingFaqs || existingFaqs.length === 0) {
+    await db.from("faqs").insert([
+      { question: "Is it free to list my property?", answer: "Yes — listing on GharBhada is completely free. No listing or subscription fees.", sort_order: 0 },
+      { question: "Will renters see my phone number?", answer: "No. We are a mediator — your contact details and exact address are never shown publicly.", sort_order: 1 },
+      { question: "How do I rent a property I like?", answer: "Open the listing and tap “Send inquiry” or “Request a visit”. Our team connects you with the owner.", sort_order: 2 },
+      { question: "Why is the location approximate?", answer: "For safety, the map shows an approximate area, not the exact pin. The address is shared once we connect you.", sort_order: 3 },
+      { question: "Can one account rent and list?", answer: "Yes. One account lets you both browse homes and list your own property.", sort_order: 4 },
+    ]);
+  }
+
   console.log("\n✅ Seed complete.");
   console.log("   Admin login:", process.env.SEED_ADMIN_EMAIL ?? "admin@gharbhada.test");
 }

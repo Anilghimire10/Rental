@@ -1,24 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/components/ui/use-toast";
 import { signUpAction } from "@/lib/actions/auth";
 import type { ActionResult } from "@/lib/types";
 
-function Submit() {
+function Submit({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus();
-  return <Button type="submit" className="w-full" disabled={pending}>{pending ? "Creating account…" : "Create account"}</Button>;
+  return (
+    <Button type="submit" className="w-full" disabled={pending || disabled}>
+      {pending ? "Creating account…" : "Create account"}
+    </Button>
+  );
 }
 
 export function SignupForm() {
   const router = useRouter();
-  const [role, setRole] = useState<"tenant" | "owner">("tenant");
+  const [accepted, setAccepted] = useState(false);
   const [state, action] = useFormState<ActionResult | null, FormData>(signUpAction, null);
 
   useEffect(() => {
@@ -33,24 +38,6 @@ export function SignupForm() {
 
   return (
     <form action={action} className="space-y-4">
-      {/* Role chooser */}
-      <input type="hidden" name="role" value={role} />
-      <div className="grid grid-cols-2 gap-2">
-        {(["tenant", "owner"] as const).map((r) => (
-          <button
-            key={r}
-            type="button"
-            onClick={() => setRole(r)}
-            className={cn(
-              "rounded-md border p-3 text-sm font-medium transition",
-              role === r ? "border-accent bg-accent/10 text-primary" : "border-border text-muted-foreground hover:border-accent",
-            )}
-          >
-            {r === "tenant" ? "I'm looking to rent" : "I'm a property owner"}
-          </button>
-        ))}
-      </div>
-
       <div className="space-y-1.5">
         <Label htmlFor="name">Full name</Label>
         <Input id="name" name="name" required placeholder="Your name" />
@@ -69,10 +56,31 @@ export function SignupForm() {
         <p className="text-xs text-muted-foreground">8+ chars with upper, lower and a number.</p>
       </div>
 
+      {/* Terms & Conditions — required */}
+      <label className="flex items-start gap-2 text-sm text-muted-foreground">
+        <Checkbox
+          name="terms"
+          value="yes"
+          checked={accepted}
+          onCheckedChange={(v) => setAccepted(v === true)}
+          className="mt-0.5"
+        />
+        <span>
+          I agree to the{" "}
+          <Link href="/policy" target="_blank" className="font-medium text-accent hover:underline">
+            Terms &amp; Conditions and Privacy Policy
+          </Link>
+          .
+        </span>
+      </label>
+
       {/* Honeypot */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
 
-      <Submit />
+      <Submit disabled={!accepted} />
+      <p className="text-center text-xs text-muted-foreground">
+        One account — browse homes and list your own property, all in one place.
+      </p>
     </form>
   );
 }

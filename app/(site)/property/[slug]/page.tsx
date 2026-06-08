@@ -16,7 +16,7 @@ import {
 } from "@/lib/services/listingService";
 import { getFavoriteIds } from "@/lib/services/favoriteService";
 import { getCurrentUser } from "@/lib/auth/session";
-import { propertyCodeFromSlug, formatPrice, formatDate, titleCase } from "@/lib/utils";
+import { propertyCodeFromSlug, formatPrice, formatDate, titleCase, timeAgo } from "@/lib/utils";
 import { BRAND } from "@/lib/config";
 
 async function load(slug: string) {
@@ -87,8 +87,10 @@ export default async function PropertyDetailPage({ params }: { params: { slug: s
             {listing.categoryName && <Badge variant="accent">{listing.categoryName}</Badge>}
             {listing.isFeatured && <Badge>Featured</Badge>}
             {listing.isRented && <Badge variant="destructive">Rented</Badge>}
-            <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
-              <Eye className="h-3.5 w-3.5" /> {listing.viewCount} views
+            {listing.isNegotiable && <Badge variant="accent">Negotiable</Badge>}
+            <span className="ml-auto flex items-center gap-3 text-xs text-muted-foreground">
+              <span>Posted {timeAgo(listing.createdAt)}</span>
+              <span className="flex items-center gap-1"><Eye className="h-3.5 w-3.5" /> {listing.viewCount} views</span>
             </span>
           </div>
 
@@ -126,9 +128,16 @@ export default async function PropertyDetailPage({ params }: { params: { slug: s
               <KeyVal icon={Wallet} label="Security deposit" value={formatPrice(listing.securityDeposit)} />
               <KeyVal icon={CalendarDays} label="Available from" value={formatDate(listing.availableFrom)} />
             </div>
-            {listing.advanceRequired && (
-              <p className="mt-3 text-sm text-muted-foreground">Advance payment required.</p>
-            )}
+            <div className="mt-3 flex flex-wrap gap-2">
+              {listing.isNegotiable && <Badge variant="accent">Rent negotiable</Badge>}
+              {listing.advanceRequired && <Badge variant="warning">Advance required</Badge>}
+              <Badge variant={listing.electricityIncluded ? "success" : "outline"}>
+                Electricity {listing.electricityIncluded ? "included" : "extra"}
+              </Badge>
+              <Badge variant={listing.waterIncluded ? "success" : "outline"}>
+                Water {listing.waterIncluded ? "included" : "extra"}
+              </Badge>
+            </div>
           </Section>
 
           {listing.amenities.length > 0 && (

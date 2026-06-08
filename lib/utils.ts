@@ -29,6 +29,31 @@ export function titleCase(s: string): string {
   return s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+/** Relative "time ago" label, e.g. "2 hours ago", "3 days ago". */
+export function timeAgo(value: string | Date | null | undefined): string {
+  if (!value) return "";
+  const d = typeof value === "string" ? new Date(value) : value;
+  const seconds = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (Number.isNaN(seconds)) return "";
+  if (seconds < 60) return "just now";
+  const units: [number, string][] = [
+    [60, "minute"],
+    [60, "hour"],
+    [24, "day"],
+    [7, "week"],
+    [4.345, "month"],
+    [12, "year"],
+  ];
+  let val = seconds;
+  let unit = "second";
+  for (const [factor, name] of units) {
+    if (val < factor) break;
+    val = Math.floor(val / factor);
+    unit = name;
+  }
+  return `${val} ${unit}${val !== 1 ? "s" : ""} ago`;
+}
+
 /** Slightly jitter a coordinate so the "approximate" marker never reveals the exact pin. */
 export function jitterCoord(value: number, meters = 250): number {
   // ~111,111 m per degree of latitude; good enough for an approximate circle.

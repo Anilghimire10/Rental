@@ -7,6 +7,7 @@ import {
   adminUpdateUserSchema,
   categorySchema,
   advertisementSchema,
+  faqSchema,
 } from "@/lib/validation/user.schema";
 import {
   moderateListing,
@@ -17,6 +18,7 @@ import { updateInquiry } from "@/lib/services/inquiryService";
 import { updateVisit } from "@/lib/services/visitService";
 import { adminUpdateUser } from "@/lib/services/userService";
 import { upsertCategory, deleteCategory } from "@/lib/services/categoryService";
+import { upsertFaq, deleteFaq } from "@/lib/services/faqService";
 import { upsertAd, deleteAd } from "@/lib/services/advertisementService";
 import { notifyOwnerPropertyApproved } from "@/lib/services/notificationService";
 import type { ActionResult } from "@/lib/types";
@@ -153,6 +155,31 @@ export async function deleteAdAction(id: string): Promise<ActionResult> {
     await deleteAd(id);
     revalidatePath("/admin/advertisements");
     return ok("Advertisement deleted.");
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+// --- FAQ --------------------------------------------------------------------
+export async function upsertFaqAction(input: unknown): Promise<ActionResult> {
+  const parsed = faqSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Invalid input." };
+  try {
+    await upsertFaq(parsed.data);
+    revalidatePath("/admin/faqs");
+    revalidatePath("/");
+    return ok("FAQ saved.");
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function deleteFaqAction(id: string): Promise<ActionResult> {
+  try {
+    await deleteFaq(id);
+    revalidatePath("/admin/faqs");
+    revalidatePath("/");
+    return ok("FAQ deleted.");
   } catch (e) {
     return fail(e);
   }
