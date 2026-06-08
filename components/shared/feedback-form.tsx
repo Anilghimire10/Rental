@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import { FieldError } from "@/components/shared/field-error";
 import { submitFeedback } from "@/lib/actions/feedback";
 import { cn } from "@/lib/utils";
 import type { ActionResult } from "@/lib/types";
@@ -21,6 +22,7 @@ export function FeedbackForm() {
   const [state, action] = useFormState<ActionResult | null, FormData>(submitFeedback, null);
   const [rating, setRating] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
+  const fieldErrors = state && !state.ok ? state.fieldErrors : undefined;
 
   useEffect(() => {
     if (!state) return;
@@ -42,10 +44,12 @@ export function FeedbackForm() {
         <div className="space-y-1.5">
           <Label htmlFor="fb-name">Name</Label>
           <Input id="fb-name" name="name" required placeholder="Your name" />
+          <FieldError errors={fieldErrors} name="name" />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="fb-email">Email (optional)</Label>
           <Input id="fb-email" name="email" type="email" placeholder="you@email.com" />
+          <FieldError errors={fieldErrors} name="email" />
         </div>
       </div>
 
@@ -63,6 +67,7 @@ export function FeedbackForm() {
       <div className="space-y-1.5">
         <Label htmlFor="fb-msg">Your feedback</Label>
         <Textarea id="fb-msg" name="message" required rows={4} placeholder="Tell us what you think…" />
+        <FieldError errors={fieldErrors} name="message" />
       </div>
 
       <Submit />

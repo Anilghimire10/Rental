@@ -11,7 +11,7 @@ import { whatsappLink } from "@/lib/utils";
 const ABOUT_LINKS = [
   { href: "/about", label: "About Us" },
   { href: "/policy", label: "Terms & Conditions" },
-  { href: "/policy", label: "Privacy Policy" },
+  { href: "/privacy", label: "Privacy Policy" },
   { href: "/faq", label: "FAQ" },
 ];
 

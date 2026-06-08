@@ -8,6 +8,7 @@ import {
   categorySchema,
   advertisementSchema,
   faqSchema,
+  siteContentSchema,
 } from "@/lib/validation/user.schema";
 import {
   moderateListing,
@@ -19,6 +20,7 @@ import { updateVisit } from "@/lib/services/visitService";
 import { adminUpdateUser } from "@/lib/services/userService";
 import { upsertCategory, deleteCategory } from "@/lib/services/categoryService";
 import { upsertFaq, deleteFaq } from "@/lib/services/faqService";
+import { upsertSiteContent } from "@/lib/services/contentService";
 import { upsertAd, deleteAd } from "@/lib/services/advertisementService";
 import { notifyOwnerPropertyApproved } from "@/lib/services/notificationService";
 import type { ActionResult } from "@/lib/types";
@@ -182,6 +184,21 @@ export async function deleteFaqAction(id: string): Promise<ActionResult> {
     revalidatePath("/admin/faqs");
     revalidatePath("/");
     return ok("FAQ deleted.");
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+// --- Site content (Terms / Privacy) ----------------------------------------
+export async function updateContentAction(input: unknown): Promise<ActionResult> {
+  const parsed = siteContentSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Invalid input." };
+  try {
+    await upsertSiteContent(parsed.data);
+    revalidatePath("/admin/content");
+    revalidatePath("/policy");
+    revalidatePath("/privacy");
+    return ok("Saved.");
   } catch (e) {
     return fail(e);
   }

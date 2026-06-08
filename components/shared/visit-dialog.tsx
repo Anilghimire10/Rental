@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import { FieldError } from "@/components/shared/field-error";
 import { submitVisit } from "@/lib/actions/inquiry";
 import type { ActionResult } from "@/lib/types";
 
@@ -40,6 +41,7 @@ export function VisitDialog({
   const [open, setOpen] = useState(false);
   const [state, formAction] = useFormState<ActionResult | null, FormData>(submitVisit, null);
   const formRef = useRef<HTMLFormElement>(null);
+  const fieldErrors = state && !state.ok ? state.fieldErrors : undefined;
 
   useEffect(() => {
     if (!state) return;
@@ -74,10 +76,12 @@ export function VisitDialog({
           <div className="space-y-1.5">
             <Label htmlFor="v-name">Full name</Label>
             <Input id="v-name" name="name" required defaultValue={defaults?.name} placeholder="Your name" />
+            <FieldError errors={fieldErrors} name="name" />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="v-phone">Phone</Label>
             <Input id="v-phone" name="phone" required defaultValue={defaults?.phone} placeholder="98xxxxxxxx" />
+            <FieldError errors={fieldErrors} name="phone" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
@@ -92,6 +96,7 @@ export function VisitDialog({
           <div className="space-y-1.5">
             <Label htmlFor="v-notes">Notes</Label>
             <Textarea id="v-notes" name="notes" placeholder="Anything we should know?" />
+            <FieldError errors={fieldErrors} name="notes" />
           </div>
           <SubmitBtn />
         </form>

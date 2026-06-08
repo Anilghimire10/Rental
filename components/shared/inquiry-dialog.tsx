@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import { FieldError } from "@/components/shared/field-error";
 import { submitInquiry } from "@/lib/actions/inquiry";
 import type { ActionResult } from "@/lib/types";
 
@@ -40,6 +41,7 @@ export function InquiryDialog({
   const [open, setOpen] = useState(false);
   const [state, formAction] = useFormState<ActionResult | null, FormData>(submitInquiry, null);
   const formRef = useRef<HTMLFormElement>(null);
+  const fieldErrors = state && !state.ok ? state.fieldErrors : undefined;
 
   useEffect(() => {
     if (!state) return;
@@ -75,20 +77,24 @@ export function InquiryDialog({
           <div className="space-y-1.5">
             <Label htmlFor="iq-name">Full name</Label>
             <Input id="iq-name" name="name" required defaultValue={defaults?.name} placeholder="Your name" />
+            <FieldError errors={fieldErrors} name="name" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label htmlFor="iq-phone">Phone</Label>
               <Input id="iq-phone" name="phone" required defaultValue={defaults?.phone} placeholder="98xxxxxxxx" />
+              <FieldError errors={fieldErrors} name="phone" />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="iq-email">Email</Label>
               <Input id="iq-email" name="email" type="email" required defaultValue={defaults?.email} placeholder="you@email.com" />
+              <FieldError errors={fieldErrors} name="email" />
             </div>
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="iq-msg">Message</Label>
             <Textarea id="iq-msg" name="message" placeholder="I'm interested in this property…" />
+            <FieldError errors={fieldErrors} name="message" />
           </div>
           <SubmitBtn />
         </form>

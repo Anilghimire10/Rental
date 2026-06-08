@@ -24,7 +24,8 @@ export function SiteFooter() {
             <li><Link href="/owner/listings/new" className="hover:text-primary">List your property</Link></li>
             <li><Link href="/about" className="hover:text-primary">About us</Link></li>
             <li><Link href="/faq" className="hover:text-primary">FAQ</Link></li>
-            <li><Link href="/policy" className="hover:text-primary">Terms &amp; Privacy</Link></li>
+            <li><Link href="/policy" className="hover:text-primary">Terms &amp; Conditions</Link></li>
+            <li><Link href="/privacy" className="hover:text-primary">Privacy Policy</Link></li>
           </ul>
         </div>
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, Building2, MessageSquare, CalendarCheck, Users, Tags, Megaphone, HelpCircle, MessageCircle,
+  LayoutDashboard, Building2, MessageSquare, CalendarCheck, Users, Tags, Megaphone, HelpCircle, MessageCircle, FileText,
 } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ const NAV = [
   { href: "/admin/advertisements", label: "Advertisements", icon: Megaphone },
   { href: "/admin/faqs", label: "FAQs", icon: HelpCircle },
   { href: "/admin/feedback", label: "Feedback", icon: MessageCircle },
+  { href: "/admin/content", label: "Terms & Privacy", icon: FileText },
 ];
 
 export function AdminSidebar() {

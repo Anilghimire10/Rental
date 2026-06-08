@@ -144,6 +144,13 @@ export type FeedbackRow = {
   created_at: string;
 }
 
+export type SiteContentRow = {
+  key: string;
+  title: string;
+  body: string;
+  updated_at: string;
+}
+
 // Each table must include `Relationships` (and the schema `CompositeTypes`) for
 // @supabase/supabase-js v2 to recognize the type — otherwise insert/update args
 // collapse to `never`.
@@ -169,6 +176,7 @@ export interface Database {
       advertisements: { Row: AdvertisementRow; Insert: Partial<AdvertisementRow> & { title: string; image: string }; Update: Partial<AdvertisementRow>; Relationships: Rel };
       faqs: { Row: FaqRow; Insert: Partial<FaqRow> & { question: string; answer: string }; Update: Partial<FaqRow>; Relationships: Rel };
       feedback: { Row: FeedbackRow; Insert: Partial<FeedbackRow> & { name: string; message: string }; Update: Partial<FeedbackRow>; Relationships: Rel };
+      site_content: { Row: SiteContentRow; Insert: Partial<SiteContentRow> & { key: string; title: string }; Update: Partial<SiteContentRow>; Relationships: Rel };
     };
     Views: Record<string, never>;
     Functions: {

@@ -1,6 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
-import { requireVerified, AuthError } from "@/lib/auth/session";
+import { requireVerified } from "@/lib/auth/session";
 
 /**
  * storageService — validated image uploads to the `property-images` bucket.
@@ -22,11 +22,8 @@ function sanitizedName(mime: string): string {
 }
 
 export async function uploadListingImage(file: File): Promise<string> {
-  // Must be a verified owner/admin to upload (email verification gate).
+  // Any verified, non-banned user may upload (single account type — everyone can list).
   const user = await requireVerified();
-  if (user.role !== "owner" && user.role !== "admin") {
-    throw new AuthError("Only owners can upload property images.", 403);
-  }
 
   if (!ALLOWED.has(file.type)) throw new Error("Only JPG, PNG or WebP images are allowed.");
   if (file.size > MAX_BYTES) throw new Error("Image must be 5 MB or smaller.");

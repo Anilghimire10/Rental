@@ -60,6 +60,13 @@ export const faqSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).max(999).default(0),
 });
 
+// --- Site content (admin-edited Terms / Privacy) ---------------------------
+export const siteContentSchema = z.object({
+  key: z.enum(["terms", "privacy"]),
+  title: z.string().trim().min(2).max(120),
+  body: z.string().trim().min(10, "Add some content").max(20000),
+});
+
 // --- Feedback (public submission) ------------------------------------------
 export const feedbackSchema = z.object({
   name: z.string().trim().min(2, "Enter your name").max(80),
