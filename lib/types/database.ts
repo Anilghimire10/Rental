@@ -31,6 +31,8 @@ export type CategoryRow = {
   name: string;
   slug: string;
   is_active: boolean;
+  show_in_nav: boolean;
+  show_on_home: boolean;
   sort_order: number;
   created_at: string;
 }

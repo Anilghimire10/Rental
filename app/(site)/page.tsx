@@ -5,8 +5,12 @@ import { ListingCard } from "@/components/shared/listing-card";
 import { SearchBar } from "@/components/shared/search-bar";
 import { AdBanner } from "@/components/shared/ad-banner";
 import { EmptyState } from "@/components/shared/empty-state";
-import { getFeaturedListings, getLatestListings } from "@/lib/services/listingService";
-import { getActiveCategories } from "@/lib/services/categoryService";
+import {
+  getFeaturedListings,
+  getLatestListings,
+  getListingsByCategorySlug,
+} from "@/lib/services/listingService";
+import { getActiveCategories, getHomeSectionCategories } from "@/lib/services/categoryService";
 import { getFavoriteIds } from "@/lib/services/favoriteService";
 import { getCurrentUser } from "@/lib/auth/session";
 import { POPULAR_AREAS, BRAND } from "@/lib/config";
@@ -18,14 +22,22 @@ export default async function HomePage() {
   const current = await getCurrentUser();
   if (current?.role === "admin") redirect("/admin");
 
-  const [featured, latest, categories, favIds, user] = await Promise.all([
+  const [featured, latest, categories, homeCats, favIds, user] = await Promise.all([
     getFeaturedListings(6),
     getLatestListings(8),
     getActiveCategories(),
+    getHomeSectionCategories(),
     getFavoriteIds(),
     getCurrentUser(),
   ]);
   const isAuthed = !!user;
+
+  // One section per admin-selected home category — only those that have listings.
+  const homeSections = (
+    await Promise.all(
+      homeCats.map(async (c) => ({ category: c, listings: await getListingsByCategorySlug(c.slug, 4) })),
+    )
+  ).filter((s) => s.listings.length > 0);
 
   return (
     <>
@@ -77,6 +89,22 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Admin-selected category sections — only those with listings */}
+      {homeSections.map(({ category, listings }) => (
+        <section key={category.id} className="w-full px-4 py-6 sm:px-6 lg:px-10">
+          <SectionHeader
+            title={category.name}
+            subtitle={`${category.name} for rent in Pokhara`}
+            href={`/search?categorySlug=${category.slug}`}
+          />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {listings.map((l) => (
+              <ListingCard key={l.id} listing={l} isAuthed={isAuthed} favorited={favIds.has(l.id)} />
+            ))}
+          </div>
+        </section>
+      ))}
 
       {/* Popular areas */}
       <section className="w-full px-4 py-10 sm:px-6 lg:px-10">

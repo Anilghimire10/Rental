@@ -18,7 +18,14 @@ export function toAdminUser(row: ProfileRow): AdminUser {
 }
 
 export function toCategory(row: CategoryRow): Category {
-  return { id: row.id, name: row.name, slug: row.slug };
+  return {
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    showInNav: row.show_in_nav,
+    showOnHome: row.show_on_home,
+    sortOrder: row.sort_order,
+  };
 }
 
 export function toAdvertisement(row: AdvertisementRow): Advertisement {

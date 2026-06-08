@@ -177,6 +177,29 @@ export async function getLatestListings(limit = 8): Promise<PublicListingCard[]>
   return (data as ListingRow[]).map((r) => toPublicCard(r, cats));
 }
 
+/** Approved, available listings in a given category slug (empty if none/unknown). */
+export async function getListingsByCategorySlug(
+  slug: string,
+  limit = 4,
+): Promise<PublicListingCard[]> {
+  const supabase = createClient();
+  const { data: cat } = await supabase.from("categories").select("id").eq("slug", slug).maybeSingle();
+  const catId = (cat as { id: string } | null)?.id;
+  if (!catId) return [];
+
+  const cats = await getCategoryLookup();
+  const { data } = await supabase
+    .from("listings")
+    .select("*")
+    .eq("status", "approved")
+    .eq("is_rented", false)
+    .eq("category_id", catId)
+    .order("is_featured", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return (data as ListingRow[] | null)?.map((r) => toPublicCard(r, cats)) ?? [];
+}
+
 /** Look up by SEO propertyCode (case-insensitive). Returns null if not public. */
 export async function getPublicListingByCode(
   propertyCode: string,

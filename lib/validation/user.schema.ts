@@ -26,6 +26,8 @@ export const categorySchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().trim().min(2, "Name is too short").max(60),
   isActive: z.coerce.boolean().default(true),
+  showInNav: z.coerce.boolean().default(false),
+  showOnHome: z.coerce.boolean().default(false),
   sortOrder: z.coerce.number().int().min(0).max(999).default(0),
 });
 

@@ -121,6 +121,7 @@ export async function upsertCategoryAction(input: unknown): Promise<ActionResult
   try {
     await upsertCategory(parsed.data);
     revalidatePath("/admin/categories");
+    revalidatePath("/", "layout"); // refresh navbar + home sections everywhere
     return ok("Category saved.");
   } catch (e) {
     return fail(e);
@@ -131,6 +132,7 @@ export async function deleteCategoryAction(id: string): Promise<ActionResult> {
   try {
     await deleteCategory(id);
     revalidatePath("/admin/categories");
+    revalidatePath("/", "layout");
     return ok("Category deleted.");
   } catch (e) {
     return fail(e);

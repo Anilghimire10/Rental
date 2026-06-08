@@ -80,10 +80,14 @@ async function ensureUser(opts: {
 
 async function main() {
   console.log("Seeding categories...");
+  const NAV = new Set(["House Rent", "Apartment", "Flat", "Office Space", "Shutter / Shop", "Room"].map(slugify));
+  const HOME = new Set(["Office Space", "Flat"].map(slugify));
   const categoryRows = DEFAULT_CATEGORIES.map((name, i) => ({
     name,
     slug: slugify(name),
     is_active: true,
+    show_in_nav: NAV.has(slugify(name)),
+    show_on_home: HOME.has(slugify(name)),
     sort_order: i,
   }));
   const { error: catErr } = await db.from("categories").upsert(categoryRows, { onConflict: "slug" });

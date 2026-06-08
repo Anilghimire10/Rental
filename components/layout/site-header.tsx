@@ -4,7 +4,7 @@ import { Logo } from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
 import { UserMenu } from "@/components/shared/user-menu";
 import { getCurrentUser } from "@/lib/auth/session";
-import { getActiveCategories } from "@/lib/services/categoryService";
+import { getNavCategories } from "@/lib/services/categoryService";
 import { AGENCY, BRAND } from "@/lib/config";
 import { whatsappLink } from "@/lib/utils";
 
@@ -17,14 +17,10 @@ const ABOUT_LINKS = [
 
 /** Public site header — top contact bar + main nav with an About Us dropdown. */
 export async function SiteHeader() {
-  const [user, categories] = await Promise.all([getCurrentUser(), getActiveCategories()]);
-
-  // Curate which categories appear in the navbar so key types (House, Apartment,
-  // Office Space, Shutter/Shop, Room) are always shown, then fill with the rest.
-  const PREFERRED = ["house-rent", "apartment", "flat", "office-space", "shutter-shop", "room"];
-  const preferred = PREFERRED.map((s) => categories.find((c) => c.slug === s)).filter(Boolean) as typeof categories;
-  const rest = categories.filter((c) => !PREFERRED.includes(c.slug));
-  const navCats = [...preferred, ...rest].slice(0, 7);
+  // Navbar categories are admin-controlled (show_in_nav + position). Cap at 8 so
+  // the bar never overflows.
+  const [user, navCatsAll] = await Promise.all([getCurrentUser(), getNavCategories()]);
+  const navCats = navCatsAll.slice(0, 8);
 
   return (
     <header className="sticky top-0 z-40 bg-background">

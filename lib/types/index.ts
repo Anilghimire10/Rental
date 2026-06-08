@@ -33,6 +33,9 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
+  showInNav: boolean;
+  showOnHome: boolean;
+  sortOrder: number;
 }
 
 /** Card shown to tenants in lists/grids. NO private fields. */

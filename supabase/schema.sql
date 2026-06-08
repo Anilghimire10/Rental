@@ -33,12 +33,14 @@ create table if not exists public.profiles (
 -- categories (admin-manageable). Seeded from DEFAULT_CATEGORIES.
 -- ============================================================================
 create table if not exists public.categories (
-  id         uuid primary key default gen_random_uuid(),
-  name       text not null unique,
-  slug       text not null unique,
-  is_active  boolean not null default true,
-  sort_order integer not null default 0,
-  created_at timestamptz not null default now()
+  id           uuid primary key default gen_random_uuid(),
+  name         text not null unique,
+  slug         text not null unique,
+  is_active    boolean not null default true,
+  show_in_nav  boolean not null default false,
+  show_on_home boolean not null default false,
+  sort_order   integer not null default 0,
+  created_at   timestamptz not null default now()
 );
 
 -- ============================================================================
