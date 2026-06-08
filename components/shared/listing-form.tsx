@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -280,8 +280,7 @@ function Field({
 function ToggleField({
   control, name, label,
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: any; name: keyof FormValues; label: string;
+  control: Control<FormValues>; name: keyof FormValues; label: string;
 }) {
   return (
     <label className="flex items-center gap-2 text-sm">

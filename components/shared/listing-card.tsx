@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { BedDouble, Bath, Maximize, MapPin, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { FavoriteButton } from "@/components/shared/favorite-button";
+import { CardImageCarousel } from "@/components/shared/card-image-carousel";
 import { formatPrice, timeAgo } from "@/lib/utils";
 import type { PublicListingCard } from "@/lib/types";
 
@@ -21,18 +21,8 @@ export function ListingCard({
 
       <Link href={`/property/${listing.slug}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
-          {listing.coverImage ? (
-            <Image
-              src={listing.coverImage}
-              alt={listing.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-muted-foreground">No photo</div>
-          )}
-          <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
+          <CardImageCarousel images={listing.images} title={listing.title} />
+          <div className="absolute left-3 top-3 z-10 flex flex-col items-start gap-1.5">
             <Badge variant={listing.isRented ? "destructive" : "success"}>
               {listing.isRented ? "Unavailable" : "Available"}
             </Badge>

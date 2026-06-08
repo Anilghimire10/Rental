@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/components/ui/slider";
 import {
   Select,
   SelectContent,
@@ -13,7 +15,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { formatPrice } from "@/lib/utils";
 import type { Category } from "@/lib/types";
+
+const RENT_MIN = 0;
+const RENT_MAX = 100_000;
+const RENT_STEP = 1_000;
 
 const TOGGLES = [
   { key: "furnished", label: "Furnished" },
@@ -26,6 +33,11 @@ const TOGGLES = [
 export function SearchFilters({ categories }: { categories: Category[] }) {
   const router = useRouter();
   const params = useSearchParams();
+
+  const [range, setRange] = useState<[number, number]>([
+    Number(params.get("minRent") ?? RENT_MIN),
+    Number(params.get("maxRent") ?? RENT_MAX),
+  ]);
 
   function apply(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -82,15 +94,24 @@ export function SearchFilters({ categories }: { categories: Category[] }) {
         </Select>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <Label htmlFor="f-min">Min rent</Label>
-          <Input id="f-min" name="minRent" type="number" min={0} defaultValue={params.get("minRent") ?? ""} />
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <Label>Rent range</Label>
+          <span className="text-xs font-medium text-muted-foreground">
+            {formatPrice(range[0])} – {range[1] >= RENT_MAX ? `${formatPrice(RENT_MAX)}+` : formatPrice(range[1])}
+          </span>
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="f-max">Max rent</Label>
-          <Input id="f-max" name="maxRent" type="number" min={0} defaultValue={params.get("maxRent") ?? ""} />
-        </div>
+        <Slider
+          min={RENT_MIN}
+          max={RENT_MAX}
+          step={RENT_STEP}
+          value={range}
+          onValueChange={(v) => setRange([v[0] ?? RENT_MIN, v[1] ?? RENT_MAX])}
+          className="py-1"
+        />
+        {/* Only submit bounds that aren't the slider extremes. */}
+        {range[0] > RENT_MIN && <input type="hidden" name="minRent" value={range[0]} />}
+        {range[1] < RENT_MAX && <input type="hidden" name="maxRent" value={range[1]} />}
       </div>
 
       <div className="space-y-2.5">

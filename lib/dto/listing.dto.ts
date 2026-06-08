@@ -34,6 +34,8 @@ export function toPublicCard(row: ListingRow, cats?: CatLookup): PublicListingCa
     bathrooms: row.bathrooms,
     areaSqft: row.area_sqft,
     coverImage: row.cover_image ?? row.gallery_images?.[0] ?? null,
+    // Cover first, then the rest of the gallery (deduped) — used by the card carousel.
+    images: dedupeImages(row.cover_image, row.gallery_images),
     amenities: row.amenities ?? [],
     isFeatured: row.is_featured,
     isRented: row.is_rented,
@@ -107,4 +109,16 @@ export function toAdminListing(
 
 export function categoryLookup(rows: CategoryRow[] | null | undefined): CatLookup {
   return new Map((rows ?? []).map((c) => [c.id, c.name]));
+}
+
+function dedupeImages(cover: string | null, gallery: string[] | null | undefined): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const url of [cover, ...(gallery ?? [])]) {
+    if (url && !seen.has(url)) {
+      seen.add(url);
+      out.push(url);
+    }
+  }
+  return out;
 }

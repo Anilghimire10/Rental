@@ -22,6 +22,7 @@ export interface SessionUser {
   name: string;
   phone: string | null;
   whatsapp: string | null;
+  avatarUrl: string | null; // from Google OAuth, if available
   role: UserRole;
   plan: UserPlan;
   isVerified: boolean;
@@ -48,6 +49,7 @@ export interface PublicListingCard {
   bathrooms: number;
   areaSqft: number | null;
   coverImage: string | null;
+  images: string[]; // cover + gallery, for the card carousel
   amenities: string[];
   isFeatured: boolean;
   isRented: boolean;

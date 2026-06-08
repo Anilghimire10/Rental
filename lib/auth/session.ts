@@ -23,13 +23,14 @@ export class AuthError extends Error {
   }
 }
 
-function toSessionUser(p: ProfileRow): SessionUser {
+function toSessionUser(p: ProfileRow, avatarUrl: string | null = null): SessionUser {
   return {
     id: p.id,
     email: p.email,
     name: p.name,
     phone: p.phone,
     whatsapp: p.whatsapp,
+    avatarUrl,
     role: p.role,
     plan: p.plan,
     isVerified: p.is_verified,
@@ -55,7 +56,12 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
     .single();
 
   if (!profile) return null;
-  return toSessionUser(profile as ProfileRow);
+
+  // Google OAuth stores the avatar in user_metadata.avatar_url / picture.
+  const meta = user.user_metadata as { avatar_url?: string; picture?: string } | undefined;
+  const avatarUrl = meta?.avatar_url ?? meta?.picture ?? null;
+
+  return toSessionUser(profile as ProfileRow, avatarUrl);
 });
 
 /** Require a logged-in, non-banned user. Throws AuthError otherwise. */

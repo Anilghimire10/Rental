@@ -14,8 +14,20 @@ export default async function AccountPage() {
 
   return (
     <div className="container max-w-3xl py-10">
-      <h1 className="font-serif text-3xl font-bold text-primary">Account</h1>
-      <p className="mt-1 text-muted-foreground">Manage your profile and contact details.</p>
+      <div className="flex items-center gap-4">
+        {user.avatarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={user.avatarUrl} alt={user.name || "Profile"} referrerPolicy="no-referrer" className="h-16 w-16 rounded-full object-cover ring-2 ring-accent/40" />
+        ) : (
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary text-lg font-semibold text-primary">
+            {(user.name || user.email).slice(0, 2).toUpperCase()}
+          </div>
+        )}
+        <div>
+          <h1 className="font-serif text-3xl font-bold text-primary">Account</h1>
+          <p className="mt-1 text-muted-foreground">Manage your profile and contact details.</p>
+        </div>
+      </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
         <Badge variant="secondary">{titleCase(user.role)}</Badge>

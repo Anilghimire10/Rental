@@ -19,8 +19,13 @@ export function UserMenu({ user }: { user: SessionUser }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="rounded-full" aria-label="Account menu">
-          <span className="text-xs font-semibold">{initials}</span>
+        <Button variant="outline" size="icon" className="overflow-hidden rounded-full p-0" aria-label="Account menu">
+          {user.avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={user.avatarUrl} alt={user.name || "Profile"} className="h-full w-full object-cover" referrerPolicy="no-referrer" />
+          ) : (
+            <span className="text-xs font-semibold">{initials}</span>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
