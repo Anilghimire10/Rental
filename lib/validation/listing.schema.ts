@@ -48,8 +48,9 @@ export const listingInputSchema = z.object({
   ownerEmail: z.string().trim().toLowerCase().email("Enter a valid email").optional().or(z.literal("")),
   exactAddress: z.string().trim().max(240).optional().or(z.literal("")),
 
-  // Media
-  coverImage: z.string().url("Add a cover image"),
+  // Media — derived from the uploaded photos in the form's onSubmit, so they are
+  // optional here (the form enforces "at least one photo" before submitting).
+  coverImage: z.string().url().optional().or(z.literal("")),
   galleryImages: z.array(z.string().url()).max(20, "Up to 20 photos").default([]),
 
   // Details

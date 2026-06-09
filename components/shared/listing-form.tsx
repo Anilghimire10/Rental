@@ -114,8 +114,19 @@ export function ListingForm({
 
   const err = (k: keyof FormValues) => errors[k]?.message as string | undefined;
 
+  // If validation blocks submission, tell the user which field instead of silently
+  // doing nothing.
+  function onInvalid(formErrors: typeof errors) {
+    const first = Object.values(formErrors)[0] as { message?: string } | undefined;
+    toast({
+      variant: "destructive",
+      title: "Please check the form",
+      description: first?.message ?? "Some required fields are missing or invalid.",
+    });
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-6">
       {/* Basics */}
       <Card>
         <CardHeader><CardTitle>Basics</CardTitle></CardHeader>
