@@ -86,14 +86,16 @@ export function ListingForm({
   }
 
   function onSubmit(values: FormValues) {
-    if (values.photos.length === 0) {
+    // `photos` lives in component state (watch) — the Zod resolver strips it from
+    // `values`, so read it from the closure, not from `values`.
+    if (photos.length === 0) {
       toast({ variant: "destructive", title: "Add at least one photo" });
       return;
     }
     const payload: ListingInput = {
       ...values,
-      coverImage: values.photos[0],
-      galleryImages: values.photos,
+      coverImage: photos[0],
+      galleryImages: photos,
       latitude: coords.lat,
       longitude: coords.lng,
     };
