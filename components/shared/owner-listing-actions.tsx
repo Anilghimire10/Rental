@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "@/components/ui/use-toast";
 import { deleteListingAction, toggleRentedAction } from "@/lib/actions/listing";
 
@@ -28,7 +29,6 @@ export function OwnerListingActions({
   }
 
   function remove() {
-    if (!confirm("Delete this listing permanently? This cannot be undone.")) return;
     start(async () => {
       const res = await deleteListingAction(id);
       toast(res.ok ? { title: res.message } : { variant: "destructive", title: "Error", description: res.error });
@@ -47,9 +47,17 @@ export function OwnerListingActions({
       <Button asChild variant="outline" size="sm">
         <Link href={`/owner/listings/${id}/edit`}><Pencil className="h-3.5 w-3.5" /> Edit</Link>
       </Button>
-      <Button variant="ghost" size="sm" onClick={remove} disabled={pending} className="text-destructive hover:text-destructive">
-        <Trash2 className="h-3.5 w-3.5" />
-      </Button>
+      <ConfirmDialog
+        title="Delete this listing?"
+        description="This permanently removes the listing and cannot be undone."
+        confirmLabel="Delete"
+        destructive
+        onConfirm={remove}
+      >
+        <Button variant="ghost" size="sm" disabled={pending} className="text-destructive hover:text-destructive">
+          <Trash2 className="h-3.5 w-3.5" />
+        </Button>
+      </ConfirmDialog>
     </div>
   );
 }

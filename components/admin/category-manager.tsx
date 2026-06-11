@@ -7,6 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { PromptDialog } from "@/components/ui/prompt-dialog";
 import { toast } from "@/components/ui/use-toast";
 import { upsertCategoryAction, deleteCategoryAction } from "@/lib/actions/admin";
 import type { CategoryRow } from "@/lib/types/database";
@@ -92,14 +94,28 @@ export function CategoryManager({ categories }: { categories: CategoryRow[] }) {
                     <Switch checked={c.show_on_home} disabled={pending} onCheckedChange={(v) => save(c, { showOnHome: v })} />
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Button size="icon" variant="ghost" disabled={pending}
-                      onClick={() => { const n = prompt("Rename category", c.name); if (n && n.trim().length >= 2) save(c, { name: n.trim() }); }}>
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" disabled={pending}
-                      onClick={() => { if (confirm(`Delete "${c.name}"?`)) run(() => deleteCategoryAction(c.id)); }}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <PromptDialog
+                      title="Rename category"
+                      label="Category name"
+                      initialValue={c.name}
+                      minLength={2}
+                      onSubmit={(name) => save(c, { name })}
+                    >
+                      <Button size="icon" variant="ghost" disabled={pending}>
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                    </PromptDialog>
+                    <ConfirmDialog
+                      title={`Delete "${c.name}"?`}
+                      description="Listings in this category will no longer be grouped under it."
+                      confirmLabel="Delete"
+                      destructive
+                      onConfirm={() => run(() => deleteCategoryAction(c.id))}
+                    >
+                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" disabled={pending}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </ConfirmDialog>
                   </td>
                 </tr>
               ))}

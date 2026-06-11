@@ -54,6 +54,7 @@ export const advertisementSchema = z.object({
 // --- FAQ management (admin) -------------------------------------------------
 export const faqSchema = z.object({
   id: z.string().uuid().optional(),
+  category: z.string().trim().min(2, "Group title is too short").max(60).default("General"),
   question: z.string().trim().min(5, "Question is too short").max(200),
   answer: z.string().trim().min(5, "Answer is too short").max(2000),
   isActive: z.coerce.boolean().default(true),

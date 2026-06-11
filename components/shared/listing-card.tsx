@@ -56,15 +56,17 @@ export function ListingCard({
             ) : null}
           </div>
 
-          <div className="flex items-end justify-between pt-2">
-            <div className="flex items-baseline gap-1">
-              <span className="text-lg font-bold text-primary">{formatPrice(listing.monthlyRent)}</span>
-              <span className="text-xs text-muted-foreground">/ month</span>
-              {listing.isNegotiable && (
-                <Badge variant="accent" className="ml-1">Negotiable</Badge>
-              )}
+          <div className="flex items-end justify-between gap-2 pt-2">
+            <div className="flex flex-wrap items-baseline gap-x-1 gap-y-1.5">
+              <span className="whitespace-nowrap">
+                <span className="text-lg font-bold text-primary">{formatPrice(listing.monthlyRent)}</span>
+                <span className="ml-1 text-xs text-muted-foreground">/ month</span>
+              </span>
+              {listing.isNegotiable && <Badge variant="accent">Negotiable</Badge>}
             </div>
-            <span className="text-xs text-muted-foreground">{timeAgo(listing.createdAt)}</span>
+            <span className="shrink-0 whitespace-nowrap text-xs text-muted-foreground">
+              {timeAgo(listing.createdAt)}
+            </span>
           </div>
         </div>
       </Link>

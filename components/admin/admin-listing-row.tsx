@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { ListingStatusBadge } from "@/components/shared/status-badge";
 import { toast } from "@/components/ui/use-toast";
 import {
@@ -92,10 +93,17 @@ export function AdminListingRow({ listing }: { listing: AdminListing }) {
           <Button asChild size="sm" variant="outline">
             <Link href={`/owner/listings/${listing.id}/edit`}><Pencil className="h-4 w-4" /> Edit</Link>
           </Button>
-          <Button size="sm" variant="ghost" disabled={pending} className="text-destructive hover:text-destructive"
-            onClick={() => { if (confirm("Delete this listing?")) run(() => adminDeleteListingAction(listing.id)); }}>
-            <Trash2 className="h-4 w-4" /> Delete
-          </Button>
+          <ConfirmDialog
+            title="Delete this listing?"
+            description="This permanently removes the listing and cannot be undone."
+            confirmLabel="Delete"
+            destructive
+            onConfirm={() => run(() => adminDeleteListingAction(listing.id))}
+          >
+            <Button size="sm" variant="ghost" disabled={pending} className="text-destructive hover:text-destructive">
+              <Trash2 className="h-4 w-4" /> Delete
+            </Button>
+          </ConfirmDialog>
         </div>
       </CardContent>
     </Card>

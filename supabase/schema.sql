@@ -210,6 +210,7 @@ create index if not exists ads_position_idx on public.advertisements (position) 
 -- ============================================================================
 create table if not exists public.faqs (
   id         uuid primary key default gen_random_uuid(),
+  category   text not null default 'General',
   question   text not null,
   answer     text not null,
   is_active  boolean not null default true,

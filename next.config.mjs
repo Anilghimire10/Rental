@@ -33,6 +33,8 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "*.supabase.co" },
       { protocol: "https", hostname: "images.unsplash.com" },
+      // Ad banners can be hosted on any https host, so allow all of them.
+      { protocol: "https", hostname: "**" },
     ],
   },
   async headers() {

@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "@/components/ui/use-toast";
 import { ImageUploader } from "@/components/shared/image-uploader";
 import { upsertAdAction, deleteAdAction } from "@/lib/actions/admin";
@@ -96,10 +97,17 @@ export function AdManager({ ads }: { ads: Advertisement[] }) {
                     onCheckedChange={(v) => run(() => upsertAdAction({ id: ad.id, title: ad.title, image: ad.image, linkUrl: ad.linkUrl ?? "", position: ad.position, isActive: v }))} />
                   Active
                 </label>
-                <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" disabled={pending}
-                  onClick={() => { if (confirm("Delete ad?")) run(() => deleteAdAction(ad.id)); }}>
-                  <Trash2 className="h-4 w-4" /> Delete
-                </Button>
+                <ConfirmDialog
+                  title="Delete this advertisement?"
+                  description="This cannot be undone."
+                  confirmLabel="Delete"
+                  destructive
+                  onConfirm={() => run(() => deleteAdAction(ad.id))}
+                >
+                  <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" disabled={pending}>
+                    <Trash2 className="h-4 w-4" /> Delete
+                  </Button>
+                </ConfirmDialog>
               </div>
             </CardContent>
           </Card>

@@ -128,6 +128,7 @@ export type AdvertisementRow = {
 
 export type FaqRow = {
   id: string;
+  category: string;
   question: string;
   answer: string;
   is_active: boolean;

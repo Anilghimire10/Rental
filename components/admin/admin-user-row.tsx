@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "@/components/ui/use-toast";
 import { updateUserAction } from "@/lib/actions/admin";
 import { formatDate } from "@/lib/utils";
@@ -61,10 +62,17 @@ export function AdminUserRow({ user }: { user: AdminUser }) {
             <ShieldCheck className="h-4 w-4" /> Unban
           </Button>
         ) : (
-          <Button size="sm" variant="ghost" disabled={pending} className="text-destructive hover:text-destructive"
-            onClick={() => { if (confirm(`Ban ${user.email}?`)) update({ isBanned: true }); }}>
-            <Ban className="h-4 w-4" /> Ban
-          </Button>
+          <ConfirmDialog
+            title={`Ban ${user.email}?`}
+            description="They will be signed out and blocked from using the platform until unbanned."
+            confirmLabel="Ban user"
+            destructive
+            onConfirm={() => update({ isBanned: true })}
+          >
+            <Button size="sm" variant="ghost" disabled={pending} className="text-destructive hover:text-destructive">
+              <Ban className="h-4 w-4" /> Ban
+            </Button>
+          </ConfirmDialog>
         )}
       </td>
     </tr>
