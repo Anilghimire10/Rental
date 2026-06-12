@@ -14,7 +14,7 @@ export default async function AccountPage() {
 
   return (
     <div className="container max-w-3xl py-10">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
         {user.avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={user.avatarUrl} alt={user.name || "Profile"} referrerPolicy="no-referrer" className="h-16 w-16 rounded-full object-cover ring-2 ring-accent/40" />

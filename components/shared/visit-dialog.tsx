@@ -57,7 +57,7 @@ export function VisitDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="lg" className="w-full">
+        <Button variant="outline" size="lg" className="w-full px-3 text-sm sm:px-4">
           <CalendarCheck className="h-4 w-4" /> Request a visit
         </Button>
       </DialogTrigger>

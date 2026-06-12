@@ -37,7 +37,7 @@ export function ProfileForm({ user }: { user: SessionUser }) {
         <Input value={user.email} disabled />
         <p className="text-xs text-muted-foreground">Email can't be changed here.</p>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="space-y-1.5">
           <Label htmlFor="phone">Phone</Label>
           <Input id="phone" name="phone" defaultValue={user.phone ?? ""} placeholder="98xxxxxxxx" />

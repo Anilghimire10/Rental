@@ -3,6 +3,7 @@ import { Phone, Mail, Plus, ChevronDown } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
 import { UserMenu } from "@/components/shared/user-menu";
+import { MobileNav } from "@/components/layout/mobile-nav";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getNavCategories } from "@/lib/services/categoryService";
 import { AGENCY, BRAND } from "@/lib/config";
@@ -67,7 +68,7 @@ export async function SiteHeader() {
             </div>
           </nav>
 
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             {user ? (
               <>
                 <Button asChild variant="accent" size="sm" className="hidden sm:inline-flex">
@@ -77,14 +78,19 @@ export async function SiteHeader() {
               </>
             ) : (
               <>
-                <Button asChild variant="ghost" size="sm">
+                <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
                   <Link href="/auth/login">Login</Link>
                 </Button>
-                <Button asChild variant="accent" size="sm">
+                <Button asChild variant="accent" size="sm" className="hidden sm:inline-flex">
                   <Link href="/auth/signup">Register</Link>
                 </Button>
               </>
             )}
+            <MobileNav
+              navCats={navCats.map((c) => ({ id: c.id, name: c.name, slug: c.slug }))}
+              aboutLinks={ABOUT_LINKS}
+              isAuthed={!!user}
+            />
           </div>
         </div>
       </div>

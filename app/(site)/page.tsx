@@ -46,9 +46,9 @@ export default async function HomePage() {
         <div className="absolute inset-0 -z-10 bg-cover bg-center" style={{ backgroundImage: `url(${HERO_IMAGE})` }} />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary/80 via-primary/65 to-primary/85" />
 
-        <div className="w-full px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+        <div className="w-full px-4 py-14 sm:px-6 sm:py-20 lg:px-10 lg:py-28">
           <div className="mx-auto max-w-4xl text-center text-primary-foreground">
-            <h1 className="text-balance font-serif text-4xl font-bold leading-tight md:text-5xl">
+            <h1 className="text-balance font-serif text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
               {BRAND} — find your next home in Pokhara
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-balance text-lg text-primary-foreground/85">

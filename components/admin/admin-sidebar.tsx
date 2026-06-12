@@ -8,7 +8,7 @@ import {
 import { Logo } from "@/components/shared/logo";
 import { cn } from "@/lib/utils";
 
-const NAV = [
+export const ADMIN_NAV = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { href: "/admin/listings", label: "Properties", icon: Building2 },
   { href: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
@@ -30,7 +30,7 @@ export function AdminSidebar() {
         <Logo href="/admin" className="[&_span:last-child]:text-primary-foreground" />
       </div>
       <nav className="flex-1 space-y-1 p-3">
-        {NAV.map((item) => {
+        {ADMIN_NAV.map((item) => {
           const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
           return (
             <Link

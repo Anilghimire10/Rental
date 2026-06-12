@@ -13,7 +13,7 @@ export function ContentPage({
   const paragraphs = body.split(/\n\s*\n/).filter((p) => p.trim().length > 0);
   return (
     <div className="container max-w-3xl py-12">
-      <h1 className="font-serif text-3xl font-bold text-primary">{title}</h1>
+      <h1 className="font-serif text-2xl font-bold text-primary sm:text-3xl">{title}</h1>
       {updatedAt && <p className="mt-2 text-sm text-muted-foreground">Last updated: {formatDate(updatedAt)}</p>}
       <div className="mt-8 space-y-4 text-sm leading-relaxed text-foreground/90">
         {paragraphs.length ? (

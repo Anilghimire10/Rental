@@ -80,7 +80,7 @@ export function ImageUploader({
       </div>
 
       {value.length > 0 && (
-        <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {value.map((url, i) => (
             <div key={url} className={cn("group relative aspect-square overflow-hidden rounded-md border", i === 0 ? "border-accent" : "border-border")}>
               <Image src={url} alt={`Photo ${i + 1}`} fill sizes="120px" className="object-cover" />

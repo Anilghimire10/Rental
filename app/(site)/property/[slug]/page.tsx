@@ -95,12 +95,27 @@ export default async function PropertyDetailPage({ params }: { params: { slug: s
           </div>
 
           <div>
-            <h1 className="font-serif text-3xl font-bold text-primary">{listing.title}</h1>
-            <p className="mt-1 flex items-center gap-1 text-muted-foreground">
-              <MapPin className="h-4 w-4" /> {listing.area}
-              {listing.wardNumber ? `, Ward ${listing.wardNumber}` : ""}, {listing.city}
-              {listing.nearbyLandmark ? ` · near ${listing.nearbyLandmark}` : ""}
+            <h1 className="font-serif text-2xl font-bold text-primary sm:text-3xl">{listing.title}</h1>
+            <p className="mt-1 flex items-start gap-1 text-sm text-muted-foreground sm:text-base">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>
+                {listing.area}
+                {listing.wardNumber ? `, Ward ${listing.wardNumber}` : ""}, {listing.city}
+                {listing.nearbyLandmark ? ` · near ${listing.nearbyLandmark}` : ""}
+              </span>
             </p>
+          </div>
+
+          {/* Mobile-only price — surfaces the rent near the top on phones. The full contact
+              panel below keeps its original position; this is hidden on lg where the sticky sidebar shows it. */}
+          <div className="flex items-baseline gap-2 rounded-lg border border-border bg-card p-4 lg:hidden">
+            <span className="text-2xl font-bold text-primary">{formatPrice(listing.monthlyRent)}</span>
+            <span className="text-sm text-muted-foreground">/ month</span>
+            {listing.securityDeposit > 0 && (
+              <span className="ml-auto text-right text-sm text-muted-foreground">
+                Deposit {formatPrice(listing.securityDeposit)}
+              </span>
+            )}
           </div>
 
           <ImageGallery images={listing.gallery} title={listing.title} />
@@ -109,10 +124,10 @@ export default async function PropertyDetailPage({ params }: { params: { slug: s
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {facts.map((f) => (
               <div key={f.label} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3">
-                <f.icon className="h-5 w-5 text-accent" />
-                <div>
+                <f.icon className="h-5 w-5 shrink-0 text-accent" />
+                <div className="min-w-0">
                   <p className="text-xs text-muted-foreground">{f.label}</p>
-                  <p className="text-sm font-semibold">{f.value}</p>
+                  <p className="truncate text-sm font-semibold">{f.value}</p>
                 </div>
               </div>
             ))}
@@ -145,7 +160,7 @@ export default async function PropertyDetailPage({ params }: { params: { slug: s
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {listing.amenities.map((a) => (
                   <span key={a} className="flex items-center gap-2 text-sm text-foreground/90">
-                    <CheckCircle2 className="h-4 w-4 text-accent" /> {titleCase(a)}
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-accent" /> {titleCase(a)}
                   </span>
                 ))}
               </div>

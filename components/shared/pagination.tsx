@@ -29,9 +29,9 @@ export function Pagination({
       <Link
         href={pageHref(params, Math.max(1, page - 1))}
         aria-disabled={page === 1}
-        className={cn("flex h-9 items-center gap-1 rounded-md border border-border px-3 text-sm", page === 1 && "pointer-events-none opacity-50")}
+        className={cn("flex h-9 items-center gap-1 rounded-md border border-border px-2 text-sm sm:px-3", page === 1 && "pointer-events-none opacity-50")}
       >
-        <ChevronLeft className="h-4 w-4" /> Prev
+        <ChevronLeft className="h-4 w-4" /> <span className="hidden sm:inline">Prev</span>
       </Link>
 
       {pages.map((p, i) => {
@@ -56,9 +56,9 @@ export function Pagination({
       <Link
         href={pageHref(params, Math.min(totalPages, page + 1))}
         aria-disabled={page === totalPages}
-        className={cn("flex h-9 items-center gap-1 rounded-md border border-border px-3 text-sm", page === totalPages && "pointer-events-none opacity-50")}
+        className={cn("flex h-9 items-center gap-1 rounded-md border border-border px-2 text-sm sm:px-3", page === totalPages && "pointer-events-none opacity-50")}
       >
-        Next <ChevronRight className="h-4 w-4" />
+        <span className="hidden sm:inline">Next</span> <ChevronRight className="h-4 w-4" />
       </Link>
     </nav>
   );

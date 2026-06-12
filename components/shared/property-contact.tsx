@@ -27,7 +27,7 @@ export function PropertyContact({
     : undefined;
 
   return (
-    <Card className="sticky top-20">
+    <Card className="lg:sticky lg:top-20">
       <CardContent className="space-y-4 p-6">
         <div>
           <div className="flex items-baseline gap-1">
@@ -39,7 +39,7 @@ export function PropertyContact({
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <InquiryDialog listingId={listing.id} propertyCode={listing.propertyCode} defaults={defaults} />
           <VisitDialog listingId={listing.id} propertyCode={listing.propertyCode} defaults={defaults} />
         </div>

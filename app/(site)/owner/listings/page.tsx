@@ -21,12 +21,12 @@ export default async function OwnerListingsPage() {
 
   return (
     <div className="container py-10">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-serif text-3xl font-bold text-primary">My properties</h1>
+          <h1 className="font-serif text-2xl font-bold text-primary sm:text-3xl">My properties</h1>
           <p className="text-muted-foreground">Manage your listings and track interest.</p>
         </div>
-        <Button asChild variant="accent"><Link href="/owner/listings/new"><Plus className="h-4 w-4" /> Add property</Link></Button>
+        <Button asChild variant="accent" className="w-full sm:w-auto"><Link href="/owner/listings/new"><Plus className="h-4 w-4" /> Add property</Link></Button>
       </div>
 
       {!user.isVerified && (

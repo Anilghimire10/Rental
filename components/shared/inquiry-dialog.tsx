@@ -57,7 +57,7 @@ export function InquiryDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="accent" size="lg" className="w-full">
+        <Button variant="accent" size="lg" className="w-full px-3 text-sm sm:px-4">
           <MessageSquare className="h-4 w-4" /> Send inquiry
         </Button>
       </DialogTrigger>
